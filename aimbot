@@ -25,7 +25,7 @@ getgenv().AirHub.Aimbot = {
 	Settings = {
 		Enabled = false,
 		TeamCheck = false,
-		AliveCheck = true,
+		AliveCheck = false,
 		WallCheck = false,
 		Sensitivity = 0, -- Animation length (in seconds) before fully locking onto target
 		ThirdPerson = false, -- Uses mousemoverel instead of CFrame to support locking in third person (could be choppy)
@@ -203,7 +203,7 @@ function Environment.Functions:ResetSettings()
 	Environment.Settings = {
 		Enabled = false,
 		TeamCheck = false,
-		AliveCheck = true,
+		AliveCheck = false,
 		WallCheck = false,
 		Sensitivity = 0, -- Animation length (in seconds) before fully locking onto target
 		ThirdPerson = false, -- Uses mousemoverel instead of CFrame to support locking in third person (could be choppy)
@@ -214,8 +214,8 @@ function Environment.Functions:ResetSettings()
 	}
 
 	Environment.FOVSettings = {
-		Enabled = true,
-		Visible = true,
+		Enabled = false,
+		Visible = false,
 		Amount = 90,
 		Color = Color3fromRGB(255, 255, 255),
 		LockedColor = Color3fromRGB(255, 70, 70),
