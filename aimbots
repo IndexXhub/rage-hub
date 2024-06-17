@@ -43,7 +43,7 @@ getgenv().AirHub.Aimbot = {
 		LockedColor = Color3fromRGB(255, 70, 70),
 		Transparency = 0.5,
 		Sides = 60,
-		Thickness = 1,
+		Thickness = 2,
 		Filled = false
 	},
 
