@@ -42,6 +42,7 @@ getgenv().AirHub.Aimbot = {
 		Amount = 90,
 		Color = Color3fromRGB(255, 255, 255),
 		LockedColor = Color3fromRGB(255, 70, 70),
+		LockedColorEnabled = true, -- New setting for LockedColor
 		Transparency = 0.5,
 		Sides = 60,
 		Thickness = 2,
@@ -140,7 +141,19 @@ local function Load()
 				RainbowCycle = (RainbowCycle + RunService.RenderStepped:Wait()) % 1
 				Environment.FOVCircle.Color = HSVToRGB(RainbowCycle, 1, 1)
 			else
-				Environment.FOVCircle.Color = Environment.FOVSettings.Color
+				-- Check if FOV color is red and Rainbow is on, disable LockedColor
+				if Environment.FOVSettings.Color == Color3fromRGB(255, 0, 0) then
+					Environment.FOVSettings.LockedColorEnabled = false
+				else
+					Environment.FOVSettings.LockedColorEnabled = true
+				end
+
+				-- Set FOV circle color based on LockedColorEnabled
+				if Environment.FOVSettings.LockedColorEnabled and Environment.Locked then
+					Environment.FOVCircle.Color = Environment.FOVSettings.LockedColor
+				else
+					Environment.FOVCircle.Color = Environment.FOVSettings.Color
+				end
 			end
 		else
 			Environment.FOVCircle.Visible = false
@@ -165,7 +178,10 @@ local function Load()
 					UserInputService.MouseDeltaSensitivity = 0
 				end
 
-				Environment.FOVCircle.Color = Environment.FOVSettings.LockedColor
+				-- Set FOV circle color to red if LockedColorEnabled is off and Rainbow is on
+				if not Environment.FOVSettings.LockedColorEnabled and Environment.FOVSettings.Rainbow then
+					Environment.FOVCircle.Color = Color3fromRGB(255, 0, 0)
+				end
 			end
 		end
 	end)
@@ -174,6 +190,8 @@ local function Load()
 		if not Typing then
 			pcall(function()
 				if Input.UserInputType == Enum.UserInputType.Keyboard and Input.KeyCode == Enum.KeyCode[#Environment.Settings.TriggerKey == 1 and stringupper(Environment.Settings.TriggerKey) or Environment.Settings.TriggerKey] or Input.UserInputType == Enum.UserInputType[Environment.Settings.TriggerKey] then
+				
+
 					if Environment.Settings.Toggle then
 						Running = not Running
 
@@ -256,11 +274,12 @@ function Environment.Functions:ResetSettings()
 		Amount = 90,
 		Color = Color3fromRGB(255, 255, 255),
 		LockedColor = Color3fromRGB(255, 70, 70),
+		LockedColorEnabled = true, -- Ensure this matches the default state of your setting
 		Transparency = 0.5,
 		Sides = 60,
 		Thickness = 1,
 		Filled = false,
-		Rainbow = false -- Added Rainbow setting
+		Rainbow = false -- Ensure this matches the default state of your setting
 	}
 end
 
