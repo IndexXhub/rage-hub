@@ -3,33 +3,34 @@ local VERSION = "v1.7.2"
 if not EspSettings then
 	getgenv().EspSettings = {
 		TeamCheck = false,
-		RefreshRate = 5, -- how fast the esp updates (milliseconds)
+		ToggleKey = "RightAlt",
+		RefreshRate = 10, -- how fast the esp updates (milliseconds)
 		MaximumDistance = 500, -- only renders players within this distance
 		FaceCamera = false, -- Makes esp appear 2D
 		AlignPoints = false, -- Improves 2D effect; only works while FaceCamera is enabled
 		-- AlignPoints: This may cause esp to have abnormal behavior when looking from certain angles
 		MouseVisibility = {
-			Enabled = false,
+			Enabled = true, -- makes any drawing objects transparent when they are near your mouse
 			Radius = 60,
 			Transparency = 0.3,
 			Method = "Hover", -- "Radius" or "Hover" | Hover is newest method and is a lot more accurate than Radius
 			HoverRadius = 50,
-			Selected = {
-				Boxes = false,
-				Tracers = false,
-				Names = false,
-				Skeletons = false,
-				HealthBars = false,
-				HeadDots = false,
-				LookTracers = false
+			Selected = { -- set any of these to false to ignore them
+				Boxes = true,
+				Tracers = true,
+				Names = true,
+				Skeletons = true,
+				HealthBars = true,
+				HeadDots = true,
+				LookTracers = true
 			}
 		},
 		Highlights = {
 			Enabled = false,
-			Players = {},
+			Players = {}, -- put player usernames into this table to 'highlight' them
 			Transparency = 1,
 			Color = Color3.fromRGB(255, 150, 0),
-			AlwaysOnTop = false
+			AlwaysOnTop = true
 		},
 		NPC = {
 			Color = Color3.fromRGB(150,150,150),
@@ -46,74 +47,74 @@ if not EspSettings then
 			}
 		},
 		Boxes = {
-			Enabled = false,
+			Enabled = true,
 			Transparency = 1,
 			Color = Color3.fromRGB(255,255,255),
-			UseTeamColor = false,
+			UseTeamColor = true,
 			RainbowColor = false,
-			Outline = false,
+			Outline = true,
 			OutlineColor = Color3.fromRGB(0,0,0),
 			OutlineThickness = 1,
 			Thickness = 1
 		},
 		Tracers = {
-			Enabled = false,
+			Enabled = true,
 			Transparency = 1,
 			Color = Color3.fromRGB(255,255,255),
-			UseTeamColor = false,
+			UseTeamColor = true,
 			RainbowColor = false,
-			Outline = false,
+			Outline = true,
 			OutlineColor = Color3.fromRGB(0,0,0),
 			OutlineThickness = 1,
 			Origin = "Top", -- "Top" or "Center" or "Bottom" or "Mouse"
 			Thickness = 1
 		},
 		Names = {
-			Enabled = false,
+			Enabled = true,
 			Transparency = 1,
 			Color = Color3.fromRGB(255,255,255),
-			UseTeamColor = false,
+			UseTeamColor = true,
 			RainbowColor = false,
-			Outline = false,
+			Outline = true,
 			OutlineColor = Color3.fromRGB(0,0,0),
 			Font = Drawing.Fonts.UI, -- UI or System or Plex or Monospace
 			Size = 18,
 			ShowDistance = false,
-			ShowHealth = false,
+			ShowHealth = true,
 			UseDisplayName = false,
 			DistanceDataType = "m", -- what it says after the distance (ex. 100m)
 			HealthDataType = "Percentage" -- "Percentage" or "Value"
 		},
 		Skeletons = {
-			Enabled = false,
+			Enabled = true,
 			Transparency = 1,
 			Color = Color3.fromRGB(255,255,255),
-			UseTeamColor = false,
+			UseTeamColor = true,
 			RainbowColor = false,
-			Outline = false,
+			Outline = true,
 			OutlineColor = Color3.fromRGB(0,0,0),
 			OutlineThickness = 1,
 			Thickness = 1
 		},
 		HealthBars = {
-			Enabled = false,
+			Enabled = true,
 			Transparency = 1,
 			Color = Color3.fromRGB(0,255,0),
-			UseTeamColor = false,
+			UseTeamColor = true,
 			RainbowColor = false,
-			Outline = false,
+			Outline = true,
 			OutlineColor = Color3.fromRGB(0,0,0),
 			OutlineThickness = 1,
 			Origin = "None", -- "None" or "Left" or "Right"
 			OutlineBarOnly = true
 		},
 		HeadDots = {
-			Enabled = false,
+			Enabled = true,
 			Transparency = 1,
 			Color = Color3.fromRGB(255,255,255),
-			UseTeamColor = false,
+			UseTeamColor = true,
 			RainbowColor = false,
-			Outline = false,
+			Outline = true,
 			OutlineColor = Color3.fromRGB(0,0,0),
 			OutlineThickness = 1,
 			Thickness = 1,
@@ -121,12 +122,12 @@ if not EspSettings then
 			Scale = 1
 		},
 		LookTracers = {
-			Enabled = false,
+			Enabled = true,
 			Transparency = 1,
 			Color = Color3.fromRGB(255,255,255),
-			UseTeamColor = false,
+			UseTeamColor = true,
 			RainbowColor = false,
-			Outline = false,
+			Outline = true,
 			OutlineColor = Color3.fromRGB(0,0,0),
 			OutlineThickness = 1,
 			Thickness = 1,
@@ -1636,6 +1637,14 @@ function NewCham(part, options)
 	return ChamObj
 end
 
+if typeof(ss.ToggleKey) == "EnumItem" then
+	ss.ToggleKey = ss.ToggleKey.Name
+end
+local conn3 = uis.InputBegan:Connect(function(i,gp)
+	if not gp and i.KeyCode == Enum.KeyCode[ss.ToggleKey] then
+		VISIBLE = not VISIBLE
+	end
+end)
 for _,v in next, players:GetPlayers() do
 	if v ~= player then
 		NewPlayer(v)
