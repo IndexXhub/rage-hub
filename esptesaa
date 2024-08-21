@@ -10,6 +10,7 @@ local camera = game.Workspace.CurrentCamera;
 local viewportSize = camera.ViewportSize;
 local x = viewportSize.X;
 local y = viewportSize.Y;
+local mousepos = Vector2.new(mouse.X, mouse.Y);
 local container = Instance.new("Folder",
 	gethui and gethui() or game:GetService("CoreGui"));
 
@@ -354,9 +355,9 @@ function EspObject:Render()
 		tracer.To = (corners.bottomLeft + corners.bottomRight)*0.5;
 		tracer.From =
     			options.tracerOrigin == "Top" and Vector2.new(x / 2, 0) or
-    			options.tracerOrigin == "Middle" and Vector2.new(x / 2, y / 2) or
-    			options.tracerOrigin == "Mouse" and Vector2.new(mouse.X, mouse.Y) or
-    			options.tracerOrigin == "Bottom" and Vector2.new(x / 2, y)
+    			options.tracerOrigin == "Center" and Vector2.new(x / 2, y / 2) or
+    			options.tracerOrigin == "Bottom" and Vector2.new(x / 2, y) or
+    			options.tracerOrigin == "Mouse" and mousepos
 
 		local tracerOutline = visible.tracerOutline;
 		tracerOutline.Color = options.tracerOutlineColor[1];
