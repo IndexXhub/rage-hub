@@ -6,7 +6,8 @@ local workspace = game:GetService("Workspace");
 -- variables
 local localPlayer = players.LocalPlayer;
 local mouse = game:GetService("Players").LocalPlayer:GetMouse();
-local x, y = viewportSize.X, viewportSize.Y;
+local x = viewportSize.X;
+local y = viewportSize.Y;
 local camera = workspace.CurrentCamera;
 local viewportSize = camera.ViewportSize;
 local container = Instance.new("Folder",
