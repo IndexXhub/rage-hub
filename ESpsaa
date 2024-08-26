@@ -690,24 +690,8 @@ function EspInterface.Unload()
 end
 
 -- game specific functions
-function EspInterface:getWeapon(player)
-    -- Ensure player has a character and the relevant objects
-    local character = player.Character
-    if not character then
-        return "Unknown"
-    end
-
-    local nprbs = character:FindFirstChild("NPRBS")
-    if not nprbs then
-        return "Unknown"
-    end
-
-    local equippedTool = nprbs:FindFirstChild("EquippedTool")
-    if equippedTool and equippedTool:IsA("Value") then
-        return tostring(equippedTool.Value) -- Return the weapon name or ID
-    end
-
-    return "Unknown"
+function EspInterface.getWeapon(player)
+	return "Unknown";
 end
 
 function EspInterface.isFriendly(player)
