@@ -691,12 +691,14 @@ end
 
 -- game specific functions
 function EspInterface.getWeapon(player)
-    local equippedTool = player:FindFirstChild("NPRBS"):FindFirstChild("EquippedTool")
-    if equippedTool and equippedTool.Value then
-        return equippedTool.Value.Name
-    else
-        return "Unknown"
+    local nprbs = player:FindFirstChild("NPRBS")
+    if nprbs then
+        local equippedTool = nprbs:FindFirstChild("EquippedTool")
+        if equippedTool and equippedTool.Value then
+            return equippedTool.Value.Name
+        end
     end
+    return "Unknown"
 end
 
 function EspInterface.isFriendly(player)
