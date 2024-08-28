@@ -440,22 +440,29 @@ function ChamObject:Destruct()
 end
 
 function ChamObject:Update()
-	local highlight = self.highlight;
-	local interface = self.interface;
-	local character = interface.getCharacter(self.player);
-	local options = interface.teamSettings[interface.isFriendly(self.player) and "friendly" or "enemy"];
-	local enabled = options.enabled and character and not
-		(#interface.whitelist > 0 and not find(interface.whitelist, self.player.UserId));
+    local highlight = self.highlight;
+    local interface = self.interface;
+    local character = interface.getCharacter(self.player);
 
-	highlight.Enabled = enabled and options.chams;
-	if highlight.Enabled then
-		highlight.DepthMode = options.chamsVisibleOnly and Enum.HighlightDepthMode.Occluded or Enum.HighlightDepthMode.AlwaysOnTop;
-		highlight.Adornee = character;
-		highlight.FillColor = options.chamsFillColor[1];
-		highlight.FillTransparency = options.chamsFillColor[2];
-		highlight.OutlineColor = options.chamsOutlineColor[1];
-		highlight.OutlineTransparency = options.chamsOutlineColor[2];
-	end
+    -- Check if the player is on the same team if teamCheck is true
+    if teamCheck and interface.isFriendly(self.player) then
+        highlight.Enabled = false
+        return
+    end
+
+    local options = interface.teamSettings[interface.isFriendly(self.player) and "friendly" or "enemy"];
+    local enabled = options.enabled and character and not
+        (#interface.whitelist > 0 and not find(interface.whitelist, self.player.UserId));
+
+    highlight.Enabled = enabled and options.chams;
+    if highlight.Enabled then
+        highlight.DepthMode = options.chamsVisibleOnly and Enum.HighlightDepthMode.Occluded or Enum.HighlightDepthMode.AlwaysOnTop;
+        highlight.Adornee = character;
+        highlight.FillColor = options.chamsFillColor[1];
+        highlight.FillTransparency = options.chamsFillColor[2];
+        highlight.OutlineColor = options.chamsOutlineColor[1];
+        highlight.OutlineTransparency = options.chamsOutlineColor[2];
+    end
 end
 
 -- instance class
@@ -540,6 +547,7 @@ local EspInterface = {
 		textFont = 2,
 		limitDistance = true,
 		maxDistance = 450,
+		teamCheck = false,
 	},
 	teamSettings = {
 		enemy = {
